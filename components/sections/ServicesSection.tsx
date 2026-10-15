@@ -5,19 +5,23 @@ import Image from 'next/image';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { useContactModal } from '@/components/ui/ContactModal';
 import { filterVisible, sortBySortOrder } from '@/lib/utils/sort-filter';
-import type { Service, SiteSettings } from '@/types/api';
+import type { Service, SiteSettings, SectionLabels } from '@/types/api';
 
 const ICONS = ['⚡', '🏢', '🛒', '🚀', '📈', '🔧'];
 
 interface ServicesSectionProps {
   services: Service[];
   settings: SiteSettings;
+  labels?: Pick<SectionLabels, 'services_title' | 'services_cta'>;
 }
 
-export default function ServicesSection({ services, settings }: ServicesSectionProps) {
+export default function ServicesSection({ services, settings, labels }: ServicesSectionProps) {
   const reducedMotion = useReducedMotion();
   const { open } = useContactModal();
   const items = sortBySortOrder(filterVisible(services));
+
+  const title = labels?.services_title || 'Що ми вміємо';
+  const ctaBtn = labels?.services_cta || 'Обговорити проект →';
 
   return (
     <section id="services" className="py-28 bg-[#0d1117] relative overflow-hidden">
@@ -33,7 +37,7 @@ export default function ServicesSection({ services, settings }: ServicesSectionP
             transition={{ duration: 0.6 }}
           >
             <h2 className="heading-outline text-5xl sm:text-6xl lg:text-7xl whitespace-nowrap">
-              Що ми вміємо
+              {title}
             </h2>
           </motion.div>
 
@@ -48,7 +52,7 @@ export default function ServicesSection({ services, settings }: ServicesSectionP
               {settings.site_description || 'Повний цикл — від ідеї та дизайну до запуску і підтримки'}
             </p>
             <button onClick={open} className="btn-outline px-6 py-3 rounded-xl text-sm">
-              Обговорити проект →
+              {ctaBtn}
             </button>
           </motion.div>
         </div>

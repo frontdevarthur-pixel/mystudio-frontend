@@ -37,24 +37,24 @@ export default function LandingPage({ data, lang }: LandingPageProps) {
       <Header settings={data.settings} lang={lang} />
 
       <main className="pt-16">
-        <HeroSection data={data.hero} settings={data.settings} />
+        <HeroSection data={data.hero} settings={data.settings} labels={data.labels} />
 
         <div className="py-2 border-y border-white/5 bg-[#0d1117]">
           <Marquee items={MARQUEE_WORDS} direction="left" speed={50} />
         </div>
 
-        <StatsSection stats={data.about.stats} siteName={data.settings.site_name} />
-        <AboutSection data={data.about} team={data.team} settings={data.settings} />
-        <ServicesSection services={data.services} settings={data.settings} />
+        <StatsSection stats={data.about.stats} siteName={data.settings.site_name} labels={data.labels} />
+        <AboutSection data={data.about} team={data.team} settings={data.settings} labels={data.labels} />
+        <ServicesSection services={data.services} settings={data.settings} labels={data.labels} />
 
         <div className="py-2 border-y border-white/5 bg-[#080b11]">
           <Marquee items={MARQUEE_WORDS} direction="right" speed={55} />
         </div>
 
-        <TechnologiesSection data={data.technologies} settings={data.settings} />
-        <PortfolioSection projects={data.portfolio} settings={data.settings} />
+        <TechnologiesSection data={data.technologies} settings={data.settings} labels={data.labels} />
+        <PortfolioSection projects={data.portfolio} settings={data.settings} labels={data.labels} />
         <GeographySection data={data.geography} />
-        <ContactSection settings={data.settings} />
+        <ContactSection settings={data.settings} labels={data.labels} />
       </main>
 
       <Footer settings={data.settings} />

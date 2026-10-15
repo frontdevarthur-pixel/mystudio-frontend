@@ -4,14 +4,16 @@ import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import ContactForm from '@/components/ui/ContactForm';
 import MapEmbed from '@/components/ui/MapEmbed';
-import type { SiteSettings } from '@/types/api';
+import type { SiteSettings, SectionLabels } from '@/types/api';
 
 interface ContactSectionProps {
   settings: SiteSettings;
+  labels?: Pick<SectionLabels, 'contact_title'>;
 }
 
-export default function ContactSection({ settings }: ContactSectionProps) {
+export default function ContactSection({ settings, labels }: ContactSectionProps) {
   const reducedMotion = useReducedMotion();
+  const contactTitle = labels?.contact_title || 'Готові починати?';
 
   return (
     <section id="contact" className="py-28 bg-[#0d1117] relative overflow-hidden">
@@ -34,7 +36,7 @@ export default function ContactSection({ settings }: ContactSectionProps) {
             transition={{ duration: 0.6 }}
           >
             <h2 className="heading-outline text-5xl sm:text-6xl lg:text-7xl mb-8">
-              Готовы начать?
+              {contactTitle}
             </h2>
 
             <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-sm">
