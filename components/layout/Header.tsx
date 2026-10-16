@@ -69,9 +69,10 @@ export default function Header({ settings, lang = 'uk' }: HeaderProps) {
             <Image
               src={settings.logo_url}
               alt={settings.site_name}
-              width={36}
-              height={36}
-              className="object-contain"
+              width={120}
+              height={40}
+              className="object-contain h-8 w-auto"
+              unoptimized
             />
           ) : (
             <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
