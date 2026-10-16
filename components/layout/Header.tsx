@@ -81,9 +81,6 @@ export default function Header({ settings, lang = 'uk' }: HeaderProps) {
               </span>
             </div>
           )}
-          <span className="text-lg font-bold text-white font-display group-hover:text-accent transition-colors">
-            {settings.site_name}
-          </span>
         </a>
 
         {/* Десктоп навигация */}
