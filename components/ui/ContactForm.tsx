@@ -9,31 +9,63 @@ import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { submitContact } from '@/lib/api/endpoints';
 import type { ContactFormPayload, ApiError } from '@/types/api';
+import type { Lang } from '@/lib/api/endpoints';
 
-const schema = z.object({
-  name: z.string().min(1, 'Введите ваше имя'),
-  email: z.string().email('Введите корректный email'),
-  phone: z
-    .string()
-    .regex(/^\+[1-9]\d{1,14}$/, 'Формат: +79001234567')
-    .or(z.literal(''))
-    .optional(),
-  project_description: z.string().min(10, 'Опишите проект (минимум 10 символов)'),
-});
+const i18n = {
+  uk: {
+    name: "Ваше ім'я *",
+    email: 'Email *',
+    phone: 'Телефон (необов\'язково)',
+    description: 'Опишіть ваш проект *',
+    submit: 'Надіслати заявку →',
+    sending: 'Надсилаємо...',
+    successTitle: 'Заявку надіслано!',
+    successText: 'Ми зв\'яжемося з вами найближчим часом.',
+    errorText: 'Сталася помилка. Спробуйте пізніше або напишіть нам напряму.',
+    nameError: 'Введіть ваше ім\'я',
+    emailError: 'Введіть коректний email',
+    phoneFormat: 'Формат: +380991234567',
+    descriptionError: 'Опишіть проект (мінімум 10 символів)',
+  },
+  en: {
+    name: 'Your name *',
+    email: 'Email *',
+    phone: 'Phone (optional)',
+    description: 'Describe your project *',
+    submit: 'Send request →',
+    sending: 'Sending...',
+    successTitle: 'Request sent!',
+    successText: 'We will contact you shortly.',
+    errorText: 'Something went wrong. Please try again or contact us directly.',
+    nameError: 'Enter your name',
+    emailError: 'Enter a valid email',
+    phoneFormat: 'Format: +380991234567',
+    descriptionError: 'Describe your project (minimum 10 characters)',
+  },
+};
 
-type FormValues = z.infer<typeof schema>;
+interface ContactFormProps {
+  onSuccess?: () => void;
+  lang?: Lang;
+}
 
-export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
+export default function ContactForm({ onSuccess, lang = 'uk' }: ContactFormProps) {
+  const t = i18n[lang] ?? i18n.uk;
   const reducedMotion = useReducedMotion();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setError,
-    formState: { errors },
-  } = useForm<FormValues>({ resolver: zodResolver(schema) });
+  const schema = z.object({
+    name: z.string().min(1, t.nameError),
+    email: z.string().email(t.emailError),
+    phone: z.string().regex(/^\+[1-9]\d{1,14}$/, t.phoneFormat).or(z.literal('')).optional(),
+    project_description: z.string().min(10, t.descriptionError),
+  });
+
+  type FormValues = z.infer<typeof schema>;
+
+  const { register, handleSubmit, reset, setError, formState: { errors } } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = async (values: FormValues) => {
     setStatus('loading');
@@ -69,43 +101,41 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
       {status === 'success' ? (
         <div className="p-6 rounded-2xl bg-green-500/10 border border-green-500/30 text-green-300 text-center">
           <div className="text-3xl mb-3">✓</div>
-          <p className="font-semibold text-lg mb-1">Заявка отправлена!</p>
-          <p className="text-sm text-green-400">Мы свяжемся с вами в ближайшее время.</p>
+          <p className="font-semibold text-lg mb-1">{t.successTitle}</p>
+          <p className="text-sm text-green-400">{t.successText}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           <div>
-            <input {...register('name')} placeholder="Ваше имя *" className={inputClass} />
+            <input {...register('name')} placeholder={t.name} className={inputClass} />
             {errors.name && <p className={errorClass}>{errors.name.message}</p>}
           </div>
           <div>
-            <input {...register('email')} type="email" placeholder="Email *" className={inputClass} />
+            <input {...register('email')} type="email" placeholder={t.email} className={inputClass} />
             {errors.email && <p className={errorClass}>{errors.email.message}</p>}
           </div>
           <div>
-            <input {...register('phone')} type="tel" placeholder="Телефон (необязательно)" className={inputClass} />
+            <input {...register('phone')} type="tel" placeholder={t.phone} className={inputClass} />
             {errors.phone && <p className={errorClass}>{errors.phone.message}</p>}
           </div>
           <div>
             <textarea
               {...register('project_description')}
               rows={4}
-              placeholder="Опишите ваш проект *"
+              placeholder={t.description}
               className={`${inputClass} resize-none`}
             />
             {errors.project_description && <p className={errorClass}>{errors.project_description.message}</p>}
           </div>
-
           {status === 'error' && (
-            <p className="text-red-400 text-sm">Произошла ошибка. Попробуйте позже или напишите нам напрямую.</p>
+            <p className="text-red-400 text-sm">{t.errorText}</p>
           )}
-
           <button
             type="submit"
             disabled={status === 'loading'}
             className="w-full py-4 rounded-xl btn-accent disabled:opacity-50 disabled:cursor-not-allowed text-sm"
           >
-            {status === 'loading' ? 'Отправляем...' : 'Отправить заявку →'}
+            {status === 'loading' ? t.sending : t.submit}
           </button>
         </form>
       )}

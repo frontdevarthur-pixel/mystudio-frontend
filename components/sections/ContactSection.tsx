@@ -5,13 +5,15 @@ import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import ContactForm from '@/components/ui/ContactForm';
 import MapEmbed from '@/components/ui/MapEmbed';
 import type { SiteSettings, SectionLabels } from '@/types/api';
+import type { Lang } from '@/lib/api/endpoints';
 
 interface ContactSectionProps {
   settings: SiteSettings;
   labels?: Pick<SectionLabels, 'contact_title'>;
+  lang?: Lang;
 }
 
-export default function ContactSection({ settings, labels }: ContactSectionProps) {
+export default function ContactSection({ settings, labels, lang = 'uk' }: ContactSectionProps) {
   const reducedMotion = useReducedMotion();
   const contactTitle = labels?.contact_title || 'Готові починати?';
 
@@ -108,7 +110,7 @@ export default function ContactSection({ settings, labels }: ContactSectionProps
             className="space-y-6"
           >
             <div className="glass-card rounded-2xl p-7 border-accent/10">
-              <ContactForm />
+              <ContactForm lang={lang} />
             </div>
 
             {settings.map_coordinates?.lat && settings.map_coordinates?.lng && (
