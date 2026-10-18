@@ -42,7 +42,7 @@ export default function ContactSection({ settings, labels, lang = 'uk' }: Contac
             </h2>
 
             <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-sm">
-              {settings.site_description || 'Расскажите о задаче — обсудим детали и предложим решение'}
+              {settings.site_description || (lang === 'en' ? 'Tell us about the task — we will discuss the details and offer a solution' : 'Розкажіть про задачу — обговоримо деталі та запропонуємо рішення')}
             </p>
 
             {/* Контакты */}

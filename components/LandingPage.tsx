@@ -45,7 +45,7 @@ export default function LandingPage({ data, lang }: LandingPageProps) {
         </div>
 
         <StatsSection stats={data.about.stats} siteName={data.settings.site_name} labels={data.labels} />
-        <AboutSection data={data.about} team={data.team} settings={data.settings} labels={data.labels} />
+        <AboutSection data={data.about} team={data.team} settings={data.settings} labels={data.labels} lang={lang} />
         <ServicesSection services={data.services} settings={data.settings} labels={data.labels} />
 
         <div className="py-2 border-y border-white/5 bg-[#080b11]">
@@ -54,11 +54,11 @@ export default function LandingPage({ data, lang }: LandingPageProps) {
 
         <TechnologiesSection data={data.technologies} settings={data.settings} labels={data.labels} />
         <PortfolioSection projects={data.portfolio} settings={data.settings} labels={data.labels} lang={lang} />
-        <GeographySection data={data.geography} />
+        <GeographySection data={data.geography} lang={lang} />
         <ContactSection settings={data.settings} labels={data.labels} lang={lang} />
       </main>
 
-      <Footer settings={data.settings} />
+      <Footer settings={data.settings} lang={lang} />
       <FloatingContacts settings={data.settings} />
     </ContactModalProvider>
   );

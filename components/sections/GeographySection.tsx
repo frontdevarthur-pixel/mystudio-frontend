@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import type { GeographySection as GeoData, CountryData } from '@/types/api';
+import type { Lang } from '@/lib/api/endpoints';
 
 interface GeographySectionProps {
   data: GeoData;
+  lang?: Lang;
 }
 
-function CountryCard({ country, index }: { country: CountryData; index: number }) {
+function CountryCard({ country, index, lang = 'uk' }: { country: CountryData; index: number; lang?: Lang }) {
   const [hovered, setHovered] = useState(false);
   const flag = country.country_code.toUpperCase().split('').map(c => String.fromCodePoint(c.charCodeAt(0) + 127397)).join('');
 
@@ -27,8 +29,8 @@ function CountryCard({ country, index }: { country: CountryData; index: number }
       <div className="flex-1 min-w-0">
         <p className="font-display font-bold text-white text-base mb-1">{country.country_name}</p>
         <div className="flex gap-4 text-xs text-slate-500">
-          <span><span className="text-accent font-bold text-sm">{country.projects_count}</span> проектов</span>
-          <span><span className="text-accent font-bold text-sm">{country.clients_count}</span> клиентов</span>
+          <span><span className="text-accent font-bold text-sm">{country.projects_count}</span> {lang === 'en' ? 'projects' : 'проектів'}</span>
+          <span><span className="text-accent font-bold text-sm">{country.clients_count}</span> {lang === 'en' ? 'clients' : 'клієнтів'}</span>
         </div>
       </div>
       <div className="w-1.5 h-8 rounded-full bg-white/5 group-hover:bg-accent/50 transition-colors" />
@@ -50,7 +52,7 @@ function CountryCard({ country, index }: { country: CountryData; index: number }
   );
 }
 
-export default function GeographySection({ data }: GeographySectionProps) {
+export default function GeographySection({ data, lang = 'uk' }: GeographySectionProps) {
   const reducedMotion = useReducedMotion();
 
   return (
@@ -79,14 +81,14 @@ export default function GeographySection({ data }: GeographySectionProps) {
               <div className="font-display text-8xl font-black text-accent leading-none">
                 {data.countries?.length ?? 0}
               </div>
-              <div className="text-slate-500 text-sm uppercase tracking-widest mt-2">стран</div>
+              <div className="text-slate-500 text-sm uppercase tracking-widest mt-2">{lang === 'en' ? 'countries' : 'країн'}</div>
             </div>
           </motion.div>
 
           {/* Правая — карточки */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {data.countries.map((country, i) => (
-              <CountryCard key={country.id} country={country} index={i} />
+              <CountryCard key={country.id} country={country} index={i} lang={lang} />
             ))}
           </div>
         </div>
