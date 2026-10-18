@@ -5,19 +5,18 @@ import Image from 'next/image';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { useContactModal } from '@/components/ui/ContactModal';
 import { filterVisible, sortBySortOrder } from '@/lib/utils/sort-filter';
-import type { Service, SiteSettings, SectionLabels } from '@/types/api';
+import type { Service, SectionLabels } from '@/types/api';
 import type { Lang } from '@/lib/api/endpoints';
 
 const ICONS = ['⚡', '🏢', '🛒', '🚀', '📈', '🔧'];
 
 interface ServicesSectionProps {
   services: Service[];
-  settings: SiteSettings;
   labels?: Pick<SectionLabels, 'services_title' | 'services_description' | 'services_cta'>;
   lang?: Lang;
 }
 
-export default function ServicesSection({ services, settings, labels, lang = 'uk' }: ServicesSectionProps) {
+export default function ServicesSection({ services, labels, lang = 'uk' }: ServicesSectionProps) {
   const reducedMotion = useReducedMotion();
   const { open } = useContactModal();
   const items = sortBySortOrder(filterVisible(services));

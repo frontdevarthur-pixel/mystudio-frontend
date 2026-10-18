@@ -46,7 +46,7 @@ export default function LandingPage({ data, lang }: LandingPageProps) {
 
         <StatsSection stats={data.about.stats} siteName={data.settings.site_name} labels={data.labels} lang={lang} />
         <AboutSection data={data.about} team={data.team} settings={data.settings} labels={data.labels} lang={lang} />
-        <ServicesSection services={data.services} settings={data.settings} labels={data.labels} lang={lang} />
+        <ServicesSection services={data.services} labels={data.labels} lang={lang} />
 
         <div className="py-2 border-y border-white/5 bg-[#080b11]">
           <Marquee items={MARQUEE_WORDS} direction="right" speed={55} />

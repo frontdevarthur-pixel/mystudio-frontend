@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import ContactForm from '@/components/ui/ContactForm';
-import MapEmbed from '@/components/ui/MapEmbed';
 import type { SiteSettings, SectionLabels } from '@/types/api';
 import type { Lang } from '@/lib/api/endpoints';
 

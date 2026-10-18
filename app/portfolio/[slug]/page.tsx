@@ -4,6 +4,7 @@ import { buildPageMetadata } from '@/lib/utils/seo';
 import PortfolioProjectDetail from '@/components/PortfolioProjectDetail';
 
 export const revalidate = 1800;
+export const dynamic = 'force-dynamic'; // Добавляем, чтобы сборка не падала из-за таймаутов API
 
 interface Props {
   params: Promise<{ slug: string }>;
