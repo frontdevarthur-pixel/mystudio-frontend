@@ -127,6 +127,5 @@ export type TranslationKey = keyof typeof translations.uk;
 
 export function t(key: TranslationKey, lang: Lang = 'uk'): string {
   const dict = translations[lang] || translations.uk;
-  // @ts-ignore
   return dict[key] || translations.uk[key] || key;
 }

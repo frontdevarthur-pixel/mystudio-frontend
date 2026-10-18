@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useContactModal } from '@/components/ui/ContactModal';
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import type { SiteSettings } from '@/types/api';
 import type { Lang } from '@/lib/api/endpoints';
 import { t } from '@/lib/i18n';
@@ -31,7 +30,6 @@ export default function Header({ settings, lang = 'uk' }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { open: openContact } = useContactModal();
-  const reducedMotion = useReducedMotion();
 
   const NAV_LINKS = lang === 'en' ? NAV_LINKS_EN : NAV_LINKS_UK;
   const altLangHref = lang === 'en' ? '/' : '/en';
