@@ -7,11 +7,13 @@ import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { useContactModal } from '@/components/ui/ContactModal';
 import ParticleCanvas from '@/components/ui/ParticleCanvas';
 import type { HeroSection as HeroData, SiteSettings, SectionLabels } from '@/types/api';
+import type { Lang } from '@/lib/api/endpoints';
 
 interface HeroSectionProps {
   data: HeroData;
   settings: SiteSettings;
   labels?: Partial<SectionLabels>;
+  lang?: Lang;
 }
 
 function MagneticButton({
@@ -78,7 +80,7 @@ function TypingText({ word }: { word: string }) {
   );
 }
 
-export default function HeroSection({ data, settings, labels }: HeroSectionProps) {
+export default function HeroSection({ data, settings, labels, lang = 'uk' }: HeroSectionProps) {
   const reducedMotion = useReducedMotion();
   const { open: openContact } = useContactModal();
 
@@ -170,7 +172,7 @@ export default function HeroSection({ data, settings, labels }: HeroSectionProps
             onClick={scrollToPortfolio}
             className="btn-outline px-9 py-4 rounded-xl text-base w-full sm:w-auto"
           >
-            {labels?.hero_secondary_cta || 'Дивитися роботи'}
+            {labels?.hero_secondary_cta || (lang === 'en' ? 'View portfolio' : 'Дивитися роботи')}
           </MagneticButton>
         </motion.div>
 

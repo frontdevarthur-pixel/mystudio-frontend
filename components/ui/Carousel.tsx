@@ -12,8 +12,8 @@ interface CarouselProps {
 }
 
 const carouselI18n = {
-  uk: { details: 'Детальніше', open: 'Відкрити →', openProject: 'Відкрити проект →', prev: 'Попередній', next: 'Наступний' },
-  en: { details: 'Details', open: 'Open →', openProject: 'Open project →', prev: 'Previous', next: 'Next' },
+  uk: { details: 'Детальніше', open: 'Відкрити →', openProject: 'Відкрити проект →', prev: 'Попередній', next: 'Наступний', slide: 'Слайд' },
+  en: { details: 'Details', open: 'Open →', openProject: 'Open project →', prev: 'Previous', next: 'Next', slide: 'Slide' },
 };
 
 export default function Carousel({ projects, lang = 'uk' }: CarouselProps) {
@@ -141,7 +141,7 @@ export default function Carousel({ projects, lang = 'uk' }: CarouselProps) {
                   key={i}
                   onClick={() => go(i, i > current ? 1 : -1)}
                   className={`w-2 h-2 rounded-full transition-all ${i === current ? 'bg-violet-400 w-6' : 'bg-white/30'}`}
-                  aria-label={`Слайд ${i + 1}`}
+                  aria-label={`${t.slide} ${i + 1}`}
                 />
               ))}
             </div>

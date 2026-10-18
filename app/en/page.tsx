@@ -44,7 +44,7 @@ export default async function HomePageEn() {
   try {
     data = await fetchLandingPageData('en');
   } catch {
-    return <FallbackPage />;
+    return <FallbackPage lang="en" />;
   }
 
   return <LandingPage data={data} lang="en" />;

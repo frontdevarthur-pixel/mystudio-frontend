@@ -118,7 +118,7 @@ export default function Header({ settings, lang = 'uk' }: HeaderProps) {
         <button
           className="md:hidden p-2 text-slate-300 hover:text-white"
           onClick={() => setMenuOpen(prev => !prev)}
-          aria-label="Открыть меню"
+          aria-label={lang === 'en' ? 'Open menu' : 'Відкрити меню'}
         >
           <div className="space-y-1.5 w-6">
             <span className={`block h-px bg-current transition-all duration-200 ${menuOpen ? 'rotate-45 translate-y-2.5 w-6' : 'w-6'}`} />

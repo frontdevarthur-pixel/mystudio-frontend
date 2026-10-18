@@ -102,8 +102,8 @@ export default function AboutSection({ data, team, labels, lang = 'uk' }: AboutS
               <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-blue-500/10 flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-6xl mb-4">🏢</div>
-                  <p className="text-slate-500 text-sm">Фото команди</p>
-                  <p className="text-slate-600 text-xs mt-1">Завантажте через WordPress Admin</p>
+                  <p className="text-slate-500 text-sm">{lang === 'en' ? 'Team photo' : 'Фото команди'}</p>
+                  <p className="text-slate-600 text-xs mt-1">{lang === 'en' ? 'Upload via WordPress Admin' : 'Завантажте через WordPress Admin'}</p>
                 </div>
               </div>
               <div className="absolute inset-0 rounded-2xl border border-white/8" />

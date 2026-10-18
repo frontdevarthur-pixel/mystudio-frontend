@@ -5,14 +5,16 @@ import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { useContactModal } from '@/components/ui/ContactModal';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
 import type { AboutStat } from '@/types/api';
+import type { Lang } from '@/lib/api/endpoints';
 
 interface StatsSectionProps {
   stats: AboutStat[];
   siteName?: string;
   labels?: { stats_cta_text?: string; stats_cta_btn?: string };
+  lang?: Lang;
 }
 
-export default function StatsSection({ stats, siteName, labels }: StatsSectionProps) {
+export default function StatsSection({ stats, siteName, labels, lang = 'uk' }: StatsSectionProps) {
   const reducedMotion = useReducedMotion();
   const { open } = useContactModal();
 
@@ -58,12 +60,12 @@ export default function StatsSection({ stats, siteName, labels }: StatsSectionPr
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-center mt-16"
         >
-          <p className="text-slate-400 mb-6 text-lg">{labels?.stats_cta_text || 'Готові стати частиною цієї статистики?'}</p>
+          <p className="text-slate-400 mb-6 text-lg">{labels?.stats_cta_text || (lang === 'en' ? 'Ready to be part of this statistics?' : 'Готові стати частиною цієї статистики?')}</p>
           <button
             onClick={open}
             className="btn-accent px-8 py-4 rounded-xl text-base shadow-lg shadow-accent/20"
           >
-            {labels?.stats_cta_btn || 'Обговорити проект →'}
+            {labels?.stats_cta_btn || (lang === 'en' ? 'Discuss project →' : 'Обговорити проект →')}
           </button>
         </motion.div>
       </div>

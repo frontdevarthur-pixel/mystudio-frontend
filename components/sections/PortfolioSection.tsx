@@ -17,7 +17,7 @@ interface PortfolioSectionProps {
 export default function PortfolioSection({ projects, labels, lang = 'uk' }: PortfolioSectionProps) {
   const reducedMotion = useReducedMotion();
   const items = sortBySortOrder(filterVisible(projects));
-  const title = labels?.portfolio_title || 'Вибрані проекти';
+  const title = labels?.portfolio_title || (lang === 'en' ? 'Selected projects' : 'Вибрані проекти');
 
   return (
     <section id="portfolio" className="py-28 bg-[#080b11] relative overflow-hidden">

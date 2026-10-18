@@ -70,10 +70,10 @@ export default function GeographySection({ data, lang = 'uk' }: GeographySection
             className="lg:sticky lg:top-28"
           >
             <h2 className="heading-outline text-5xl sm:text-6xl mb-6 whitespace-nowrap">
-              {data.title ?? 'География'}
+              {data.title ?? (lang === 'en' ? 'Client Geography' : 'Географія клієнтів')}
             </h2>
             <p className="text-slate-500 text-base leading-relaxed">
-              {data.description ?? 'Мы работаем с клиентами по всему миру'}
+              {data.description ?? (lang === 'en' ? 'We work with clients worldwide' : 'Ми працюємо з клієнтами по всьому світу')}
             </p>
 
             {/* Большая цифра */}

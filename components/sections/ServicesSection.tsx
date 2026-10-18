@@ -6,6 +6,7 @@ import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { useContactModal } from '@/components/ui/ContactModal';
 import { filterVisible, sortBySortOrder } from '@/lib/utils/sort-filter';
 import type { Service, SiteSettings, SectionLabels } from '@/types/api';
+import type { Lang } from '@/lib/api/endpoints';
 
 const ICONS = ['⚡', '🏢', '🛒', '🚀', '📈', '🔧'];
 
@@ -13,16 +14,17 @@ interface ServicesSectionProps {
   services: Service[];
   settings: SiteSettings;
   labels?: Pick<SectionLabels, 'services_title' | 'services_description' | 'services_cta'>;
+  lang?: Lang;
 }
 
-export default function ServicesSection({ services, settings, labels }: ServicesSectionProps) {
+export default function ServicesSection({ services, settings, labels, lang = 'uk' }: ServicesSectionProps) {
   const reducedMotion = useReducedMotion();
   const { open } = useContactModal();
   const items = sortBySortOrder(filterVisible(services));
 
-  const title = labels?.services_title || 'Що ми вміємо';
-  const description = labels?.services_description || settings.site_description || 'Повний цикл — від ідеї та дизайну до запуску і підтримки';
-  const ctaBtn = labels?.services_cta || 'Обговорити проект →';
+  const title = labels?.services_title || (lang === 'en' ? 'What we do' : 'Що ми вміємо');
+  const description = labels?.services_description || (lang === 'en' ? 'Full cycle — from idea and design to launch and support' : 'Повний цикл — від ідеї та дизайну до запуску і підтримки');
+  const ctaBtn = labels?.services_cta || (lang === 'en' ? 'Discuss project →' : 'Обговорити проект →');
 
   return (
     <section id="services" className="py-28 bg-[#0d1117] relative overflow-hidden">
