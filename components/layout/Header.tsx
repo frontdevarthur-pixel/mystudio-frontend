@@ -3,23 +3,23 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useContactModal } from '@/components/ui/ContactModal';
+import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import type { SiteSettings } from '@/types/api';
 import type { Lang } from '@/lib/api/endpoints';
+import { t } from '@/lib/i18n';
 
 const NAV_LINKS_UK = [
-  { label: 'Про нас', href: '#about' },
   { label: 'Послуги', href: '#services' },
   { label: 'Технології', href: '#technologies' },
   { label: 'Портфоліо', href: '#portfolio' },
-  { label: 'Контакти', href: '#contact' },
+  { label: 'Про нас', href: '#about' },
 ];
 
 const NAV_LINKS_EN = [
-  { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Technologies', href: '#technologies' },
   { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '#about' },
 ];
 
 interface HeaderProps {
@@ -28,24 +28,24 @@ interface HeaderProps {
 }
 
 export default function Header({ settings, lang = 'uk' }: HeaderProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { open: openContact } = useContactModal();
+  const reducedMotion = useReducedMotion();
 
   const NAV_LINKS = lang === 'en' ? NAV_LINKS_EN : NAV_LINKS_UK;
-  const ctaLabel = lang === 'en' ? 'Discuss project' : 'Обговорити проект';
   const altLangHref = lang === 'en' ? '/' : '/en';
   const altLangLabel = lang === 'en' ? 'UA' : 'EN';
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setIsScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    setMenuOpen(false);
+    setIsMenuOpen(false);
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
@@ -53,7 +53,7 @@ export default function Header({ settings, lang = 'uk' }: HeaderProps) {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
+        isScrolled
           ? 'bg-[#080b11]/95 backdrop-blur-xl border-b border-white/5 shadow-xl shadow-black/30'
           : 'bg-transparent'
       }`}
@@ -107,29 +107,29 @@ export default function Header({ settings, lang = 'uk' }: HeaderProps) {
             {altLangLabel}
           </a>
           <button
-            onClick={openContact}
-            className="btn-accent px-5 py-2 rounded-lg text-sm"
-          >
-            {ctaLabel}
-          </button>
-        </div>
+              onClick={openContact}
+              className="btn-accent px-5 py-2 rounded-lg text-sm"
+            >
+              {t('discussProject', lang)}
+            </button>
+          </div>
 
-        {/* Мобильный бургер */}
-        <button
-          className="md:hidden p-2 text-slate-300 hover:text-white"
-          onClick={() => setMenuOpen(prev => !prev)}
-          aria-label={lang === 'en' ? 'Open menu' : 'Відкрити меню'}
-        >
+          {/* Бургер */}
+          <button
+            className="md:hidden p-2 text-slate-300 hover:text-white"
+            onClick={() => setIsMenuOpen(prev => !prev)}
+            aria-label={t('menuOpen', lang)}
+          >
           <div className="space-y-1.5 w-6">
-            <span className={`block h-px bg-current transition-all duration-200 ${menuOpen ? 'rotate-45 translate-y-2.5 w-6' : 'w-6'}`} />
-            <span className={`block h-px bg-current transition-all duration-200 ${menuOpen ? 'opacity-0 w-3' : 'w-4'}`} />
-            <span className={`block h-px bg-current transition-all duration-200 ${menuOpen ? '-rotate-45 -translate-y-2.5 w-6' : 'w-5'}`} />
+            <span className={`block h-px bg-current transition-all duration-200 ${isMenuOpen ? 'rotate-45 translate-y-2.5 w-6' : 'w-6'}`} />
+            <span className={`block h-px bg-current transition-all duration-200 ${isMenuOpen ? 'opacity-0 w-3' : 'w-4'}`} />
+            <span className={`block h-px bg-current transition-all duration-200 ${isMenuOpen ? '-rotate-45 -translate-y-2.5 w-6' : 'w-5'}`} />
           </div>
         </button>
       </div>
 
       {/* Мобильное меню */}
-      {menuOpen && (
+      {isMenuOpen && (
         <nav className="md:hidden bg-[#0d1117] border-t border-white/5 px-4 py-6 flex flex-col gap-5">
           {NAV_LINKS.map(link => (
             <a
@@ -145,7 +145,7 @@ export default function Header({ settings, lang = 'uk' }: HeaderProps) {
             onClick={openContact}
             className="btn-accent px-5 py-3 rounded-lg text-sm text-center mt-2"
           >
-            {ctaLabel}
+            {t('discussProject', lang)}
           </button>
           <a
             href={altLangHref}

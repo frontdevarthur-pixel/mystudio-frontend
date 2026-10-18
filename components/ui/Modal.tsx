@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Lang } from '@/lib/api/endpoints';
+import { t } from '@/lib/i18n';
 
 interface ModalProps {
   isOpen: boolean;
@@ -52,7 +53,7 @@ export default function Modal({ isOpen, onClose, children, lang = 'uk' }: ModalP
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10"
-              aria-label={lang === 'en' ? 'Close' : 'Закрити'}
+              aria-label={t('close', lang)}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
