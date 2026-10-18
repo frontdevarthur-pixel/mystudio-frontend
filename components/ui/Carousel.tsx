@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import Image from 'next/image';
-import Modal from '@/components/ui/Modal';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import type { PortfolioProject } from '@/types/api';
 
@@ -23,7 +22,6 @@ export default function Carousel({ projects, lang = 'uk' }: CarouselProps) {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
-  const [modalProject, setModalProject] = useState<PortfolioProject | null>(null);
 
   const go = useCallback((index: number, dir: number) => {
     setDirection(dir);
@@ -69,10 +67,7 @@ export default function Carousel({ projects, lang = 'uk' }: CarouselProps) {
             className="grid md:grid-cols-2 gap-0 glass-card"
           >
             {/* Изображение */}
-            <div
-              className="relative aspect-video md:aspect-auto md:min-h-[360px] cursor-pointer group"
-              onClick={() => setModalProject(project)}
-            >
+            <div className="relative aspect-video md:aspect-auto md:min-h-[360px] group">
               {project.screenshot_url ? (
                 <Image
                   src={project.screenshot_url}
@@ -106,12 +101,6 @@ export default function Carousel({ projects, lang = 'uk' }: CarouselProps) {
               )}
 
               <div className="flex gap-3">
-                <button
-                  onClick={() => setModalProject(project)}
-                  className="btn-accent px-5 py-2.5 rounded-xl text-sm"
-                >
-                  {t.details}
-                </button>
                 {project.project_url && (
                   <a
                     href={project.project_url}
@@ -160,44 +149,6 @@ export default function Carousel({ projects, lang = 'uk' }: CarouselProps) {
         )}
       </div>
 
-      {/* Модальное окно с деталями */}
-      <Modal isOpen={!!modalProject} onClose={() => setModalProject(null)}>
-        {modalProject && (
-          <div className="p-6">
-            {modalProject.screenshot_url && (
-              <div className="relative aspect-video rounded-xl overflow-hidden mb-6">
-                <Image src={modalProject.screenshot_url} alt={modalProject.screenshot_alt || modalProject.title} fill className="object-cover" />
-              </div>
-            )}
-            <h3 className="text-2xl font-bold text-white mb-3">{modalProject.title}</h3>
-            {modalProject.full_description ? (
-              <div
-                className="text-gray-300 text-sm leading-relaxed mb-4 prose prose-invert prose-sm max-w-none"
-                dangerouslySetInnerHTML={{ __html: modalProject.full_description }}
-              />
-            ) : (
-              <p className="text-gray-300 text-sm mb-4">{modalProject.short_description}</p>
-            )}
-            {modalProject.technologies?.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((t, i) => (
-                    <span key={i} className="px-3 py-1 rounded-full glass-card border-accent/20 text-accent/80 text-xs font-display">{t}</span>
-                  ))}
-              </div>
-            )}
-            {modalProject.project_url && (
-              <a
-                href={modalProject.project_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block btn-accent px-5 py-2.5 rounded-xl text-sm"
-              >
-                {t.openProject}
-              </a>
-            )}
-          </div>
-        )}
-      </Modal>
     </>
   );
 }
