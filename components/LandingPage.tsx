@@ -10,6 +10,7 @@ import GeographySection from '@/components/sections/GeographySection';
 import ContactSection from '@/components/sections/ContactSection';
 import Marquee from '@/components/ui/Marquee';
 import FloatingContacts from '@/components/ui/FloatingContacts';
+import { ContactModalProvider } from '@/components/ui/ContactModal';
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from '@/lib/utils/jsonld';
 import type { LandingPageData } from '@/types/api';
 import type { Lang } from '@/lib/api/endpoints';
@@ -30,7 +31,7 @@ export default function LandingPage({ data, lang }: LandingPageProps) {
   const siteJsonLd = buildWebSiteJsonLd(data.settings);
 
   return (
-    <>
+    <ContactModalProvider lang={lang}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }} />
 
@@ -54,11 +55,11 @@ export default function LandingPage({ data, lang }: LandingPageProps) {
         <TechnologiesSection data={data.technologies} settings={data.settings} labels={data.labels} />
         <PortfolioSection projects={data.portfolio} settings={data.settings} labels={data.labels} />
         <GeographySection data={data.geography} />
-        <ContactSection settings={data.settings} labels={data.labels} />
+        <ContactSection settings={data.settings} labels={data.labels} lang={lang} />
       </main>
 
       <Footer settings={data.settings} />
       <FloatingContacts settings={data.settings} />
-    </>
+    </ContactModalProvider>
   );
 }

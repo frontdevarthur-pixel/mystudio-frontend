@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ContactModalProvider } from '@/components/ui/ContactModal';
 import { fetchSettings } from '@/lib/api/endpoints';
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-inter' });
@@ -43,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="ru" className={inter.variable}>
       <body className="bg-[#080b11] text-slate-200 antialiased">
-        <ContactModalProvider>{children}</ContactModalProvider>
+        {children}
       </body>
     </html>
   );
