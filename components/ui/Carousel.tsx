@@ -9,9 +9,16 @@ import type { PortfolioProject } from '@/types/api';
 
 interface CarouselProps {
   projects: PortfolioProject[];
+  lang?: 'uk' | 'en';
 }
 
-export default function Carousel({ projects }: CarouselProps) {
+const carouselI18n = {
+  uk: { details: 'Детальніше', open: 'Відкрити →', openProject: 'Відкрити проект →', prev: 'Попередній', next: 'Наступний' },
+  en: { details: 'Details', open: 'Open →', openProject: 'Open project →', prev: 'Previous', next: 'Next' },
+};
+
+export default function Carousel({ projects, lang = 'uk' }: CarouselProps) {
+  const t = carouselI18n[lang] ?? carouselI18n.uk;
   const reducedMotion = useReducedMotion();
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -103,7 +110,7 @@ export default function Carousel({ projects }: CarouselProps) {
                   onClick={() => setModalProject(project)}
                   className="btn-accent px-5 py-2.5 rounded-xl text-sm"
                 >
-                  Подробнее
+                  {t.details}
                 </button>
                 {project.project_url && (
                   <a
@@ -112,7 +119,7 @@ export default function Carousel({ projects }: CarouselProps) {
                     rel="noopener noreferrer"
                     className="btn-outline px-5 py-2.5 rounded-xl text-sm"
                   >
-                    Открыть →
+                    {t.open}
                   </a>
                 )}
               </div>
@@ -126,14 +133,14 @@ export default function Carousel({ projects }: CarouselProps) {
             <button
               onClick={prev}
               className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors z-10"
-              aria-label="Предыдущий"
+              aria-label={t.prev}
             >
               ‹
             </button>
             <button
               onClick={next}
               className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors z-10"
-              aria-label="Следующий"
+              aria-label={t.next}
             >
               ›
             </button>
@@ -185,7 +192,7 @@ export default function Carousel({ projects }: CarouselProps) {
                 rel="noopener noreferrer"
                 className="inline-block btn-accent px-5 py-2.5 rounded-xl text-sm"
               >
-                Открыть проект →
+                {t.openProject}
               </a>
             )}
           </div>

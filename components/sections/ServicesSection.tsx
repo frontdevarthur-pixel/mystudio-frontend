@@ -12,7 +12,7 @@ const ICONS = ['⚡', '🏢', '🛒', '🚀', '📈', '🔧'];
 interface ServicesSectionProps {
   services: Service[];
   settings: SiteSettings;
-  labels?: Pick<SectionLabels, 'services_title' | 'services_cta'>;
+  labels?: Pick<SectionLabels, 'services_title' | 'services_description' | 'services_cta'>;
 }
 
 export default function ServicesSection({ services, settings, labels }: ServicesSectionProps) {
@@ -21,6 +21,7 @@ export default function ServicesSection({ services, settings, labels }: Services
   const items = sortBySortOrder(filterVisible(services));
 
   const title = labels?.services_title || 'Що ми вміємо';
+  const description = labels?.services_description || settings.site_description || 'Повний цикл — від ідеї та дизайну до запуску і підтримки';
   const ctaBtn = labels?.services_cta || 'Обговорити проект →';
 
   return (
@@ -49,7 +50,7 @@ export default function ServicesSection({ services, settings, labels }: Services
             className="lg:max-w-xs"
           >
             <p className="text-slate-400 text-lg leading-relaxed mb-6">
-              {settings.site_description || 'Повний цикл — від ідеї та дизайну до запуску і підтримки'}
+              {description}
             </p>
             <button onClick={open} className="btn-outline px-6 py-3 rounded-xl text-sm">
               {ctaBtn}

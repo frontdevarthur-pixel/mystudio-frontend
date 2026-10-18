@@ -53,7 +53,7 @@ export default function LandingPage({ data, lang }: LandingPageProps) {
         </div>
 
         <TechnologiesSection data={data.technologies} settings={data.settings} labels={data.labels} />
-        <PortfolioSection projects={data.portfolio} settings={data.settings} labels={data.labels} />
+        <PortfolioSection projects={data.portfolio} settings={data.settings} labels={data.labels} lang={lang} />
         <GeographySection data={data.geography} />
         <ContactSection settings={data.settings} labels={data.labels} lang={lang} />
       </main>

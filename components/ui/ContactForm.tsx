@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { submitContact } from '@/lib/api/endpoints';
 import type { ContactFormPayload, ApiError } from '@/types/api';
@@ -24,7 +26,7 @@ const i18n = {
     errorText: 'Сталася помилка. Спробуйте пізніше або напишіть нам напряму.',
     nameError: 'Введіть ваше ім\'я',
     emailError: 'Введіть коректний email',
-    phoneFormat: 'Формат: +380991234567',
+    phoneError: 'Введіть коректний номер',
     descriptionError: 'Опишіть проект (мінімум 10 символів)',
   },
   en: {
@@ -39,10 +41,19 @@ const i18n = {
     errorText: 'Something went wrong. Please try again or contact us directly.',
     nameError: 'Enter your name',
     emailError: 'Enter a valid email',
-    phoneFormat: 'Format: +380991234567',
+    phoneError: 'Enter a valid phone number',
     descriptionError: 'Describe your project (minimum 10 characters)',
   },
 };
+
+const schema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+  phone: z.string().optional(),
+  project_description: z.string().min(10),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 interface ContactFormProps {
   onSuccess?: () => void;
@@ -54,16 +65,7 @@ export default function ContactForm({ onSuccess, lang = 'uk' }: ContactFormProps
   const reducedMotion = useReducedMotion();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const schema = z.object({
-    name: z.string().min(1, t.nameError),
-    email: z.string().email(t.emailError),
-    phone: z.string().regex(/^\+[1-9]\d{1,14}$/, t.phoneFormat).or(z.literal('')).optional(),
-    project_description: z.string().min(10, t.descriptionError),
-  });
-
-  type FormValues = z.infer<typeof schema>;
-
-  const { register, handleSubmit, reset, setError, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, reset, setError, control, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
 
@@ -108,15 +110,28 @@ export default function ContactForm({ onSuccess, lang = 'uk' }: ContactFormProps
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           <div>
             <input {...register('name')} placeholder={t.name} className={inputClass} />
-            {errors.name && <p className={errorClass}>{errors.name.message}</p>}
+            {errors.name && <p className={errorClass}>{t.nameError}</p>}
           </div>
           <div>
             <input {...register('email')} type="email" placeholder={t.email} className={inputClass} />
-            {errors.email && <p className={errorClass}>{errors.email.message}</p>}
+            {errors.email && <p className={errorClass}>{t.emailError}</p>}
           </div>
           <div>
-            <input {...register('phone')} type="tel" placeholder={t.phone} className={inputClass} />
-            {errors.phone && <p className={errorClass}>{errors.phone.message}</p>}
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field }) => (
+                <PhoneInput
+                  defaultCountry="ua"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  placeholder={t.phone}
+                  inputClassName={inputClass}
+                  style={{ '--react-international-phone-background-color': 'transparent' } as React.CSSProperties}
+                />
+              )}
+            />
+            {errors.phone && <p className={errorClass}>{t.phoneError}</p>}
           </div>
           <div>
             <textarea
@@ -125,11 +140,9 @@ export default function ContactForm({ onSuccess, lang = 'uk' }: ContactFormProps
               placeholder={t.description}
               className={`${inputClass} resize-none`}
             />
-            {errors.project_description && <p className={errorClass}>{errors.project_description.message}</p>}
+            {errors.project_description && <p className={errorClass}>{t.descriptionError}</p>}
           </div>
-          {status === 'error' && (
-            <p className="text-red-400 text-sm">{t.errorText}</p>
-          )}
+          {status === 'error' && <p className="text-red-400 text-sm">{t.errorText}</p>}
           <button
             type="submit"
             disabled={status === 'loading'}

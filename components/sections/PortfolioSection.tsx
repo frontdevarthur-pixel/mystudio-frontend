@@ -5,14 +5,16 @@ import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import Carousel from '@/components/ui/Carousel';
 import { filterVisible, sortBySortOrder } from '@/lib/utils/sort-filter';
 import type { PortfolioProject, SectionLabels } from '@/types/api';
+import type { Lang } from '@/lib/api/endpoints';
 
 interface PortfolioSectionProps {
   projects: PortfolioProject[];
   settings?: unknown;
   labels?: Pick<SectionLabels, 'portfolio_title'>;
+  lang?: Lang;
 }
 
-export default function PortfolioSection({ projects, labels }: PortfolioSectionProps) {
+export default function PortfolioSection({ projects, labels, lang = 'uk' }: PortfolioSectionProps) {
   const reducedMotion = useReducedMotion();
   const items = sortBySortOrder(filterVisible(projects));
   const title = labels?.portfolio_title || 'Вибрані проекти';
@@ -42,7 +44,7 @@ export default function PortfolioSection({ projects, labels }: PortfolioSectionP
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <Carousel projects={items} />
+          <Carousel projects={items} lang={lang} />
         </motion.div>
       </div>
     </section>

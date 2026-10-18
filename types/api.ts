@@ -166,6 +166,7 @@ export interface ApiError {
 
 export interface SectionLabels {
   services_title: string;
+  services_description: string;
   services_cta: string;
   technologies_title: string;
   technologies_subtitle: string;
