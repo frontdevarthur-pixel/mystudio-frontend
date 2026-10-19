@@ -12,6 +12,8 @@ const NAV_LINKS_UK = [
   { label: 'Технології', href: '#technologies' },
   { label: 'Портфоліо', href: '#portfolio' },
   { label: 'Про нас', href: '#about' },
+  { label: 'Географія', href: '#geography' },
+  { label: 'Контакти', href: '#contact' },
 ];
 
 const NAV_LINKS_EN = [
@@ -19,6 +21,8 @@ const NAV_LINKS_EN = [
   { label: 'Technologies', href: '#technologies' },
   { label: 'Portfolio', href: '#portfolio' },
   { label: 'About', href: '#about' },
+  { label: 'Geography', href: '#geography' },
+  { label: 'Contacts', href: '#contact' },
 ];
 
 interface HeaderProps {
@@ -82,7 +86,7 @@ export default function Header({ settings, lang = 'uk' }: HeaderProps) {
         </a>
 
         {/* Десктоп навигация */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-5 lg:gap-8">
           {NAV_LINKS.map(link => (
             <a
               key={link.href}
