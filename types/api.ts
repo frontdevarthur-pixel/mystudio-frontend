@@ -52,6 +52,7 @@ export interface AboutSection {
   mission: string;
   values: string[];
   stats: AboutStat[];
+  team_enabled?: boolean;
 }
 
 export interface AboutStat {

@@ -123,7 +123,7 @@ export default function AboutSection({ data, team, labels, lang = 'uk' }: AboutS
           </motion.div>
         </div>
 
-        {team?.length > 0 && <TeamSlider team={team} reducedMotion={reducedMotion} teamTitle={teamTitle} lang={lang} />}
+        {data.team_enabled !== false && team?.length > 0 && <TeamSlider team={team} reducedMotion={reducedMotion} teamTitle={teamTitle} lang={lang} />}
       </div>
     </section>
   );
